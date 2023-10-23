@@ -6,9 +6,7 @@ def test():
 def main():
     num_tries = 0
     correct_guesses = ""
-    num_incorrect = 0
-    p1_score = 0
-    p2_score = 0
+    num_incorrect = 1
 
     # Get secret word
     word_input_check_token = False
@@ -22,9 +20,9 @@ def main():
     # Get num tries
     num_tries_input_token = False
     while num_tries_input_token == False:
-        num_tries_input = get_num_tries()
+        num_tries_input = get_num_tries_input()
         if num_tries_input_check(num_tries_input) == True:
-            # Set value for num_tries
+            num_tries = int(num_tries_input)
             num_tries_possible = int(num_tries_input)
             break
         else:
@@ -38,7 +36,24 @@ def main():
         while guess_char_token == False:
             secret_word_guess_input = get_guess_char()
             if guess_input_check(secret_word_guess_input) == True:
-                pass
+                did_guess_correct = check_for_matches_and_return_correct_letters(guess_char = secret_word_guess_input,
+                                                             secret_word = secret_word, 
+                                                             guesses = correct_guesses)
+                
+                if len(did_guess_correct) != 0:
+                    correct_guesses += did_guess_correct
+                    if len(correct_guesses) == len(secret_word):
+                        print("\n~~~[PLAYER 2] WINS!~~~\n")
+                        print("[END OF PROGRAM]")
+                        exit()
+                else:
+                    num_tries -= 1
+                    if num_tries == 0:
+                        print("\n~~~[PLAYER 1] WINS!~~~\n")
+                        print("[END OF PROGRAM]\n")
+                        exit()
+
+                
 
 
                 
@@ -51,10 +66,10 @@ def get_Secret_Word() -> str:
     """This function prompts Player 1 to enter the secret word and returns that string"""
     
     secret_word = input("\n[PLAYER 1] ENTER SECRET WORD: ")
-    return secret_word.upper
+    return secret_word
 
 
-def get_num_tries() -> str:
+def get_num_tries_input() -> str:
     """This func prompts player 1 to enter an integer for how many guesses player 2 will receive"""
 
     num_tries = input("\n[PLAYER 1] ENTER NUMBER OF TRIES: ")
@@ -87,7 +102,7 @@ def end_game() -> bool:
 
 # Display secret word functions
 
-def check_for_matches_and_return_bool(guess_char: str, secret_word: str, guesses: list) -> str:
+def check_for_matches_and_return_correct_letters(guess_char: str, secret_word: str, guesses: list) -> str:
     """This func checks to see if the currently guessed char is in the secret word and prints
      the letters that have been correctly guessed """
 
@@ -101,12 +116,13 @@ def check_for_matches_and_return_bool(guess_char: str, secret_word: str, guesses
                 print(f"{secret_word[i]}", end = " ")
             if secret_word[i] not in guesses:
                 print("_", end = " ")
+    print("\n")
 
     if guess_char in secret_word:
         print("\nYES, GOOD GUESS")
     else:
         print("\nNOPE, TRY AGAIN")
-
+    print(correct_substring)
     return correct_substring
             
 
@@ -143,7 +159,7 @@ def guess_input_check(inputToCheck: str) -> bool:
         return False
     
 
-test()
+main()
 
 
 
