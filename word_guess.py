@@ -1,8 +1,11 @@
+def test():
+    check_for_matches_and_return_bool("C", "FUCK", ["F"])
+
 
 
 def main():
-    num_tries_possible = 0
-    num_correct = 0
+    num_tries = 0
+    correct_guesses = ""
     num_incorrect = 0
     p1_score = 0
     p2_score = 0
@@ -27,64 +30,18 @@ def main():
         else:
             num_tries_input_token = False
 
-    end_program_bool = False
-
-    # BEGIN GAME SESSION
-    while end_program_bool == False:
-
-        # Get num tries
-        inputCheckToken = False
-        while inputCheckToken == False:
-            num_tries = get_num_tries()
-            if num_tries_input_check(num_tries) == True:
-                break
-            else:
-                inputCheckToken = False
-
-        # Get secret word
-        secret_word_token = False
-        while secret_word_token == False:
-            secret_word_input = get_Secret_Word()
-            if secret_word_input_Check(secret_word_input) == True:
-                secret_word = secret_word_input
-                break
-            else:
-                secret_word_token = False
+        # Start guessing loop
+    while len(correct_guesses) < len(secret_word):
 
         # Make a guess
         guess_char_token = False
         while guess_char_token == False:
             secret_word_guess_input = get_guess_char()
             if guess_input_check(secret_word_guess_input) == True:
-                if secret_word_guess_input in secret_word:
-                     pass
-                     #TODO FINISH STUFF
+                pass
 
 
-        # Checks number of tries
-        if num_incorrect == num_tries_possible:
-            print("\n[PLAYER 1] WINS!!")
-            p1_score += 1
-            print(f"\n[PLAYER 1] SCORE: {p1_score}")
-            get_end_code = end_game()
-            if get_end_code == True:
-                print("\n\n\nGOODBYE!\n~PROGRAM END~\n")
-                exit()
-            if get_end_code == False:
-                end_program_bool = False
-
-        # Checks number of correct letters
-        if num_correct == len(secret_word):
-            print("\n[PLAYER 2] WINS!!!")
-            p2_score += 1
-            print(f"\n[PLAYER 1] SCORE: {p2_score}")
-            get_end_code = end_game()
-            if get_end_code == True:
-                print("\n\n\nGOODBYE!\n~PROGRAM END~\n")
-                exit()
-            if get_end_code == False:
-                end_program_bool = False
-
+                
 
 #-----------------------------------------END OF MAIN--------------------------------------------#
     
@@ -94,7 +51,7 @@ def get_Secret_Word() -> str:
     """This function prompts Player 1 to enter the secret word and returns that string"""
     
     secret_word = input("\n[PLAYER 1] ENTER SECRET WORD: ")
-    return secret_word
+    return secret_word.upper
 
 
 def get_num_tries() -> str:
@@ -128,6 +85,30 @@ def end_game() -> bool:
             inputCheckToken = False
             print("INVALID INPUT")
 
+# Display secret word functions
+
+def check_for_matches_and_return_bool(guess_char: str, secret_word: str, guesses: list) -> str:
+    """This func checks to see if the currently guessed char is in the secret word and prints
+     the letters that have been correctly guessed """
+
+    correct_substring = ""
+    for i in range(len(secret_word)):
+        if guess_char == secret_word[i]:
+            print(f"{guess_char}", end = " ")
+            correct_substring += guess_char
+        else:
+            if secret_word[i] in guesses:
+                print(f"{secret_word[i]}", end = " ")
+            if secret_word[i] not in guesses:
+                print("_", end = " ")
+
+    if guess_char in secret_word:
+        print("\nYES, GOOD GUESS")
+    else:
+        print("\nNOPE, TRY AGAIN")
+
+    return correct_substring
+            
 
 # Input check functions
 def secret_word_input_Check(inputToCheck: str) -> bool:
@@ -162,7 +143,7 @@ def guess_input_check(inputToCheck: str) -> bool:
         return False
     
 
-
+test()
 
 
 
