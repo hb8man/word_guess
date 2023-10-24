@@ -116,7 +116,6 @@ def check_for_matches_and_return_correct_letters(guess_char: str, secret_word: s
                 print(f"{secret_word[i]}", end = " ")
             if secret_word[i] not in guesses:
                 print("_", end = " ")
-    print("\n")
 
     if guess_char in secret_word:
         print("\nYES, GOOD GUESS")
